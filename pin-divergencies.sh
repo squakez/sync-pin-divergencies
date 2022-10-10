@@ -12,11 +12,22 @@ EOT
 BASE_DIR=$(pwd)
 INIT_DIRECTORY=$1
 
+if [ "$INIT_DIRECTORY" == "" ]; then
+    echo "ERROR: you must provide a directory as an argument"
+    display_usage
+    exit 1
+fi
+
 pushd $1
 for f in $(find .); do 
     if [[ ! -d $f ]]; then
-        echo "Synchronizing $f ..."
-        cp $BASE_DIR/$f $f
+        if [ -f $f ] && [ -f $BASE_DIR/$f ]; then
+            echo "Synchronizing $BASE_DIR/$f --> $f"
+            cp $BASE_DIR/$f $f
+        else
+            echo "ERROR: $f not found either in init path or project path"
+            exit 2
+        fi
     fi
 done
 popd
