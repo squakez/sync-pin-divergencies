@@ -34,4 +34,4 @@ popd
 
 echo "Committing changes to Git"
 git add --all
-git commit -m "chore(ci): copying changes back to init directory"
+git diff-index --quiet HEAD || git commit -m "chore: copying changes back to init directory"
